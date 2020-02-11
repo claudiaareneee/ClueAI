@@ -76,11 +76,11 @@ class TreeBuilder():
         self.checkConstraints(node, deck)
 
         if (len(node.children) == 0 and node.shouldHaveChildren):
-            for player in range(self.numberOfPlayers):
-                # if player != self.playerNumberInOrder:
-                child = Item(deck[node.depth - 1]['name'], player, deck[node.depth - 1]['cardType'], parent=node, children=None)
-                visited.append(node)
-                self.addItemToTree(child, visited, deck)
+            for player in range(self.numberOfPlayers + 1):
+                if player != self.playerNumberInOrder:
+                    child = Item(deck[node.depth - 1]['name'], player, deck[node.depth - 1]['cardType'], parent=node, children=None)
+                    visited.append(node)
+                    self.addItemToTree(child, visited, deck)
 
         if node in visited:
             pass
@@ -91,17 +91,20 @@ class TreeBuilder():
         cardCount = []
         # center = {'hasPerson': False, 'hasWeapon': False, 'hasRoom': False}
 
-        for item in range(self.numberOfPlayers):
-            cardCount.append(item)
+        for _ in range(self.numberOfPlayers + 1):
+            cardCount.append(0)
 
         while parent is not self.root:
             cardCount[parent.holder] += 1
-            
             if cardCount[parent.holder] > self.players[parent.holder]['numberOfCards']:
                 # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCount[parent.holder]) + "  number " + str(self.players[parent.holder]['numberOfCards']))
                 node.constraintViolated = True
                 break
 
+            if parent.holder == self.playerNumberInOrder:
+                node.constraintViolated = True
+                break
+        
             parent = parent.parent
 
         if (node.depth >= len(deck) or node.constraintViolated):
