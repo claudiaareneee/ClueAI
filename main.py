@@ -4,7 +4,7 @@ from Cards import cards
 from TreeBuilder import TreeBuilder
 
 if __name__ == '__main__':
-    game = Game(2)
+    game = Game(3)
     print(game.middle)
     print (game.players)
 

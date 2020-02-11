@@ -78,6 +78,9 @@ class TreeBuilder():
 
         if (len(node.children) == 0 and node.shouldHaveChildren):
             for player in range(self.numberOfPlayers + 1):
+                if len(self.root.descendants) > 500:
+                    return
+
                 if player != self.playerNumberInOrder:
                     child = Item(deck[node.depth - 1]['name'], player, deck[node.depth - 1]['cardType'], parent=node, children=None)
                     visited.append(node)
@@ -140,7 +143,16 @@ class TreeBuilder():
         for leaf in self.root.leaves:
             if (not leaf.constraintViolated):
                 solutions.append(leaf)
-                print(RenderTree(leaf))
-        
+
+                parent = leaf
+                leafpath = ""
+                
+                while parent is not self.root:
+                    leafpath = parent.name + ", Player " + str(parent.holder) + ", " + parent.cardType + " \n" + leafpath
+                    parent = parent.parent
+
+                # print(leafpath + "\n\n")
+
+        print(len(solutions))
 
 
