@@ -23,7 +23,7 @@ class TreeBuilder():
         self.players = []
 
         for _ in range(0, self.numberOfPlayers + 1): #  = 1 for center
-            self.players.append({'knownCards' : [], 'numberOfCards' : 0})
+            self.players.append({'knownCards' : [], 'knownUnpossessedCards':[], 'numberOfCards' : 0})
 
         for card in playerCards:
             if card in self.remainingDeck['people']:
@@ -154,5 +154,12 @@ class TreeBuilder():
                 # print(leafpath + "\n\n")
 
         print(len(solutions))
+
+    def addConstraint(self, player, cardName, possessed):
+        if possessed:
+            self.players[player]['knownCards'].append(cardName)
+        else: 
+            self.players[player]['knownUnpossessedCards'].append(cardName)
+
 
 
