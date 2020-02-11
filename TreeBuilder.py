@@ -39,7 +39,7 @@ class TreeBuilder():
                 print("card " + card + " wasn't in deck")
 
         playerIndex = 0
-        self.numberOfCardsTypes = {"people": deck["people"], "weapons": deck["weapons"], "rooms": deck["rooms"]}
+        self.numberOfCardsTypes = {"person": deck["people"], "weapon": deck["weapons"], "room": deck["rooms"]}
         numberOfCardsInDeck = len(deck["people"]) + len(deck["weapons"]) + len(deck["rooms"]) - 3
         
         while (numberOfCardsInDeck > 0):
@@ -104,15 +104,20 @@ class TreeBuilder():
                 if (center[parent.cardType] is None):
                     center[parent.cardType] = parent.name
                 else:
-                    node.constraintViolated = True
+                    node.constraintViolated = "Parent has more than one " + parent.cardType
+                    break
+
+            if (center[parent.cardType] is None and cardCountType[parent.cardType] is self.numberOfCardsTypes[parent.cardType]):
+                    node.constraintViolated = "Center doesn't have a " + parent.cardType
+                    break
 
             if cardCountPlayer[parent.holder] > self.players[parent.holder]['numberOfCards']:
                 # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCountPlayer[parent.holder]) + "  number " + str(self.players[parent.holder]['numberOfCards']))
-                node.constraintViolated = True
+                node.constraintViolated = "Player " + str(parent.holder) + " has too many cards"
                 break
 
             if parent.holder == self.playerNumberInOrder:
-                node.constraintViolated = True
+                node.constraintViolated = "Player " + str(self.playerNumberInOrder) + " already has this card"
                 break
         
             parent = parent.parent
