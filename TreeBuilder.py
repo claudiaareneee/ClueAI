@@ -39,6 +39,7 @@ class TreeBuilder():
                 print("card " + card + " wasn't in deck")
 
         playerIndex = 0
+        self.numberOfCardsTypes = {"people": deck["people"], "weapons": deck["weapons"], "rooms": deck["rooms"]}
         numberOfCardsInDeck = len(deck["people"]) + len(deck["weapons"]) + len(deck["rooms"]) - 3
         
         while (numberOfCardsInDeck > 0):
@@ -88,16 +89,25 @@ class TreeBuilder():
     def checkConstraints(self, node, deck):
         shouldHaveChildren = True
         parent = node
-        cardCount = []
-        # center = {'hasPerson': False, 'hasWeapon': False, 'hasRoom': False}
+        cardCountPlayer = []
+        cardCountType = {"person": 0, "weapon": 0, "room": 0}
+        center = {'person': None, 'weapon': None, 'room': None}
 
         for _ in range(self.numberOfPlayers + 1):
-            cardCount.append(0)
+            cardCountPlayer.append(0)
 
         while parent is not self.root:
-            cardCount[parent.holder] += 1
-            if cardCount[parent.holder] > self.players[parent.holder]['numberOfCards']:
-                # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCount[parent.holder]) + "  number " + str(self.players[parent.holder]['numberOfCards']))
+            cardCountPlayer[parent.holder] += 1
+            cardCountType[parent.cardType] += 1
+
+            if (parent.holder == self.numberOfPlayers):
+                if (center[parent.cardType] is None):
+                    center[parent.cardType] = parent.name
+                else:
+                    node.constraintViolated = True
+
+            if cardCountPlayer[parent.holder] > self.players[parent.holder]['numberOfCards']:
+                # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCountPlayer[parent.holder]) + "  number " + str(self.players[parent.holder]['numberOfCards']))
                 node.constraintViolated = True
                 break
 

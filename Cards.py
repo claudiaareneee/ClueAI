@@ -1,4 +1,4 @@
-cards = {
+cards2 = {
     "people": ["White", "Green", "Scarlet"],
     "weapons": ["Rope", "Knife", "Dumbell"],
     "rooms": ["Billiard Room", "Study", "Conservatory"]
@@ -10,7 +10,7 @@ cards3 = {
     "rooms": ["Billiard Room", "Study", "Conservatory", "Ballroom", "Lounge"]
 }
 
-cards2 = {
+cards = {
     "people": ["White", "Green"],
     "weapons": ["Rope", "Knife"],
     "rooms": ["Billiard Room", "Observatory"]
