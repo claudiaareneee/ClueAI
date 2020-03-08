@@ -199,7 +199,6 @@ class TreeBuilder():
         self.file.writelines("Solutions start here: \n")
         
         solutions = []
-        centerCardCombinations = []
         for leaf in self.root.leaves:
             if (leaf.constraintViolated == "False: Could be a winner"):
                 playerCards = []
