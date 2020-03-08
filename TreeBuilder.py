@@ -195,11 +195,18 @@ class TreeBuilder():
         self.file.close()
 
     def checkForWinners(self):
+        self.file = open(FILENAME,"a") 
+        self.file.writelines("Solutions start here: \n")
+        
         solutions = []
         centerCardCombinations = []
         for leaf in self.root.leaves:
             if (leaf.constraintViolated == "False: Could be a winner"):
-                centerCards = []
+                playerCards = []
+
+                for _ in range(self.numberOfPlayers + 1):
+                    playerCards.append([])
+                
                 solutions.append(leaf)
 
                 parent = leaf
@@ -207,16 +214,19 @@ class TreeBuilder():
                 
                 while parent is not self.root:
                     leafpath = parent.name + ", Player " + str(parent.holder) + ", " + parent.cardType + " \n" + leafpath
+                    if(parent.holder is not None):
+                        playerCards[parent.holder].append(parent.name)
                     parent = parent.parent
 
-                    if(parent.holder == self.numberOfPlayers):
-                        centerCards.append(parent.name)
-
+                self.file.writelines(str(playerCards) + '\n')
                 # print(leafpath + "\n\n")
                 # print(leafpath)
-                centerCardCombinations.append(centerCards)
+        
+        self.file.writelines("\n\n\n")
 
         print(len(solutions))
+        self.file.writelines("Number of solutions: " + str(len(solutions)))
+        self.file.close()
         return(len(solutions))
 
     def addConstraint(self, player, cardName, possessed):
