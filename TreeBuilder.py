@@ -50,6 +50,10 @@ class TreeBuilder():
         self.players[playerNumberInOrder]['knownCards'] = playerCards
         self.players[numberOfPlayers]['numberOfCards'] = 3
 
+        self.file = open("tree.txt","w") 
+        self.file.writelines("Trees\n\n\n")
+        self.file.close()
+
         self.buildTree()
 
     def buildTree(self):
@@ -66,28 +70,25 @@ class TreeBuilder():
 
         # print(deck)
 
-        self.addItemToTree(self.root, [], deck)        
+        self.addItemToTree(self.root, deck)        
         
         self.printTree()
 
         self.checkForWinners()
+        
         print("wow done")
 
-    def addItemToTree(self, node, visited, deck):
+    def addItemToTree(self, node, deck):
         self.checkConstraints(node, deck)
 
         if (len(node.children) == 0 and node.shouldHaveChildren):
             for player in range(self.numberOfPlayers + 1):
-                if len(self.root.descendants) > 500:
-                    return
+                # if len(self.root.descendants) > 500:
+                #     return
 
                 if player != self.playerNumberInOrder:
                     child = Item(deck[node.depth - 1]['name'], player, deck[node.depth - 1]['cardType'], parent=node, children=None)
-                    visited.append(node)
-                    self.addItemToTree(child, visited, deck)
-
-        if node in visited:
-            pass
+                    self.addItemToTree(child, deck)
 
     def checkConstraints(self, node, deck):
         shouldHaveChildren = True
@@ -122,7 +123,18 @@ class TreeBuilder():
             if parent.holder == self.playerNumberInOrder:
                 node.constraintViolated = "Player " + str(self.playerNumberInOrder) + " already has this card"
                 break
-        
+
+            for i in range(self.numberOfPlayers):
+                if parent.name in self.players[i]["knownCards"]:
+                    if parent.holder is not i:
+                        parent.constraintViolated = "Player " + str(i) + " should have " + parent.name
+                        break
+                
+                elif parent.name in self.players[i]["knownUnpossessedCards"]:
+                    if parent.holder is i:
+                        parent.constraintViolated = "Player " + str(i) + " should not have " + parent.name
+                        break
+
             parent = parent.parent
 
         if (node.depth >= len(deck) or node.constraintViolated):
@@ -131,17 +143,28 @@ class TreeBuilder():
         node.shouldHaveChildren = shouldHaveChildren
 
     def printTree(self):
+        # TODO: Remove
+        self.file = open("tree.txt","a") 
+        self.file.writelines("Print Tree Starts here\n")
+
         for pre, fill, node in RenderTree(self.root):
             treestr = u"%s%s" % (pre, node.name)
-    
-            print(treestr.ljust(8), "   cardType: " + str(node.cardType), "   Player: " + str(node.holder), "   Constraint violated: " + str(node.constraintViolated))
+
+            # print(treestr.ljust(8), "   cardType: " + str(node.cardType), "   Player: " + str(node.holder), "   Constraint violated: " + str(node.constraintViolated))
+            self.file.writelines(str (treestr) + "   cardType: " + str(node.cardType) + "   Player: " + str(node.holder) + "   Constraint violated: " + str(node.constraintViolated) + "\n")
         
-        print("\n\n\n")
+        # print("\n\n\n")
+        self.file.writelines("\n\n\n")
+
+        # TODO: remove
+        self.file.close()
 
     def checkForWinners(self):
         solutions = []
+        centerCardCombinations = []
         for leaf in self.root.leaves:
             if (not leaf.constraintViolated):
+                centerCards = []
                 solutions.append(leaf)
 
                 parent = leaf
@@ -151,9 +174,15 @@ class TreeBuilder():
                     leafpath = parent.name + ", Player " + str(parent.holder) + ", " + parent.cardType + " \n" + leafpath
                     parent = parent.parent
 
+                    if(parent.holder == self.numberOfPlayers):
+                        centerCards.append(parent.name)
+
                 # print(leafpath + "\n\n")
+                # print(leafpath)
+                centerCardCombinations.append(centerCards)
 
         print(len(solutions))
+        return(len(solutions))
 
     def addConstraint(self, player, cardName, possessed):
         if possessed:
