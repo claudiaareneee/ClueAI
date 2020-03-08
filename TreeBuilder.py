@@ -70,8 +70,10 @@ class TreeBuilder():
 
         # print(deck)
 
+        checked = list()
+
         self.addItemToTree(self.root, deck)        
-        
+        # self.pruneDeadEnds(self.root, checked)
         self.printTree()
 
         self.checkForWinners()
@@ -135,12 +137,43 @@ class TreeBuilder():
                         parent.constraintViolated = "Player " + str(i) + " should not have " + parent.name
                         break
 
+            # if (center[parent.cardType] is not None):
+            #     constraintViolations = 0
+            #     print (parent.name + "  " + parent.cardType)
+            #     for player in range(self.numberOfPlayers):
+            #         if (cardCountPlayer[player] >= (self.players[player]['numberOfCards'])):
+            #             constraintViolations += 1
+            #             parent.name = "lol"
+            #             print("player: " + str(player))
+
+            #     if (constraintViolations >= self.numberOfPlayers - 1):
+            #         parent.constraintViolated = "Forward checking"
+            #         break
+
             parent = parent.parent
 
         if (node.depth >= len(deck) or node.constraintViolated):
             shouldHaveChildren = False
 
+        if (node.depth >= len(deck) and not node.constraintViolated):
+            node.constraintViolated = "False: Could be a winner"
+        
+
         node.shouldHaveChildren = shouldHaveChildren
+
+    # def pruneDeadEnds(self, node, checked):
+    #     properchildren = list()
+    #     for child in node.children:
+    #         if not child in checked:
+    #             if not node.constraintViolated:
+    #                 properchildren.append(child)
+    #             else:
+    #                 self.pruneDeadEnds(child, checked)
+    #         return
+        
+    #     node.children = tuple(properchildren)
+    #     checked.append(node)
+
 
     def printTree(self):
         # TODO: Remove
@@ -163,7 +196,7 @@ class TreeBuilder():
         solutions = []
         centerCardCombinations = []
         for leaf in self.root.leaves:
-            if (not leaf.constraintViolated):
+            if (leaf.constraintViolated == "False: Could be a winner"):
                 centerCards = []
                 solutions.append(leaf)
 
