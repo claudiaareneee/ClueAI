@@ -1,6 +1,8 @@
 from anytree import NodeMixin, RenderTree
 import copy
 
+FILENAME = "tree.txt"
+
 class Item(NodeMixin):
     def __init__(self, name, holder, cardType, parent=None, children=None):
         super(Item, self).__init__()
@@ -50,7 +52,7 @@ class TreeBuilder():
         self.players[playerNumberInOrder]['knownCards'] = playerCards
         self.players[numberOfPlayers]['numberOfCards'] = 3
 
-        self.file = open("tree.txt","w") 
+        self.file = open(FILENAME,"w") 
         self.file.writelines("Trees\n\n\n")
         self.file.close()
 
@@ -137,20 +139,19 @@ class TreeBuilder():
                         parent.constraintViolated = "Player " + str(i) + " should not have " + parent.name
                         break
 
-            # if (center[parent.cardType] is not None):
-            #     constraintViolations = 0
-            #     print (parent.name + "  " + parent.cardType)
-            #     for player in range(self.numberOfPlayers):
-            #         if (cardCountPlayer[player] >= (self.players[player]['numberOfCards'])):
-            #             constraintViolations += 1
-            #             parent.name = "lol"
-            #             print("player: " + str(player))
-
-            #     if (constraintViolations >= self.numberOfPlayers - 1):
-            #         parent.constraintViolated = "Forward checking"
-            #         break
 
             parent = parent.parent
+
+        # print(node.cardType)
+        if ((not node.constraintViolated) and (node.cardType in center) and (center[node.cardType] is not None)):
+            constraintViolations = 0
+            
+            for player in range(self.numberOfPlayers):
+                if (cardCountPlayer[player] > (self.players[player]['numberOfCards'] -1)):
+                    constraintViolations += 1
+
+            if (node.depth < len(deck) and (constraintViolations == (self.numberOfPlayers - 1))):
+                node.constraintViolated = "Forward checking: Children will have too many cards, center already has " + node.cardType
 
         if (node.depth >= len(deck) or node.constraintViolated):
             shouldHaveChildren = False
@@ -177,7 +178,7 @@ class TreeBuilder():
 
     def printTree(self):
         # TODO: Remove
-        self.file = open("tree.txt","a") 
+        self.file = open(FILENAME,"a") 
         self.file.writelines("Print Tree Starts here\n")
 
         for pre, fill, node in RenderTree(self.root):
@@ -187,6 +188,7 @@ class TreeBuilder():
             self.file.writelines(str (treestr) + "   cardType: " + str(node.cardType) + "   Player: " + str(node.holder) + "   Constraint violated: " + str(node.constraintViolated) + "\n")
         
         # print("\n\n\n")
+        self.file.writelines("\n\nNumber of decendants " + str(len(self.root.descendants)))
         self.file.writelines("\n\n\n")
 
         # TODO: remove
