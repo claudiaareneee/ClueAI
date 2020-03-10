@@ -27,7 +27,6 @@ class Game():
 
         self.winner = None
 
-
     def makeGuess(self, playerId, person, weapon, room):
         playerIndex = playerId + 1
         opponentId = playerIndex % self.numberOfPlayers
@@ -84,6 +83,9 @@ class Game():
                 print(item + " shown by Player " + str(opponent+1))
             except:
                 print("No one showed")
+
+            if (playerId == 0):
+                    yield (opponent, item)
 
             playerIndex += 1
             playerId = playerIndex % self.numberOfPlayers
