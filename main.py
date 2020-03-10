@@ -26,11 +26,9 @@ if __name__ == '__main__':
 
             tree.buildTree()
 
-        # else:
-        #     for player in range(1, game.numberOfPlayers):
-        #         tree.addConstraint(player, person, False)
-        #         tree.addConstraint(player, weapon, False)
-        #         tree.addConstraint(player, room, False)
+        else:
+            for player in range(1, game.numberOfPlayers):
+                tree.addConstraint(player, item, False)
         print(opponent)
         print(item)
 
