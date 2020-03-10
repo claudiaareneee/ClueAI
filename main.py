@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     # Testing: This may or may not work
     for (opponent, item) in game.play():
-        if (opponent != None && item != None):
+        if (opponent != None and item != None):
             tree.addConstraint(opponent, item, true)
 
             if (opponent > 1):
