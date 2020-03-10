@@ -18,20 +18,22 @@ if __name__ == '__main__':
     # Testing: This may or may not work
     for (opponent, item) in game.play():
         if (opponent != None and item != None):
-            tree.addConstraint(opponent, item, true)
+            tree.addConstraint(opponent, item, True)
 
             if (opponent > 1):
                 for player in range(1, opponent):
-                    tree.addConstraint(player, person, false)
-                    tree.addConstraint(player, weapon, false)
-                    tree.addConstraint(player, room, false)
+                    tree.addConstraint(player, item, False)
 
-        else:
-            for player in range(1, game.numberOfPlayers):
-                tree.addConstraint(player, person, false)
-                tree.addConstraint(player, weapon, false)
-                tree.addConstraint(player, room, false)
+            tree.buildTree()
+
+        # else:
+        #     for player in range(1, game.numberOfPlayers):
+        #         tree.addConstraint(player, person, False)
+        #         tree.addConstraint(player, weapon, False)
+        #         tree.addConstraint(player, room, False)
+        print(opponent)
+        print(item)
 
         # Functions that don't exist yet, but may be needed.
-        (person, weapon, room) = tree.NextGuess()
-        game.setNextGuess(person, weapon, room)
+        # (person, weapon, room) = tree.NextGuess()
+        # game.setNextGuess(person, weapon, room)
