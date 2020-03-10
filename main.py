@@ -14,3 +14,24 @@ if __name__ == '__main__':
 
     # game.makeGuess(0,cards["people"][0], cards["weapons"][0], cards["rooms"][0])
     # game.play()
+
+    # Testing: This may or may not work
+    for (opponent, item) in game.play():
+        if (opponent != None && item != None):
+            tree.addConstraint(opponent, item, true)
+
+            if (opponent > 1):
+                for player in range(1, opponent):
+                    tree.addConstraint(player, person, false)
+                    tree.addConstraint(player, weapon, false)
+                    tree.addConstraint(player, room, false)
+
+        else:
+            for player in range(1, game.numberOfPlayers):
+                tree.addConstraint(player, person, false)
+                tree.addConstraint(player, weapon, false)
+                tree.addConstraint(player, room, false)
+
+        # Functions that don't exist yet, but may be needed.
+        (person, weapon, room) = tree.NextGuess()
+        game.setNextGuess(person, weapon, room)
