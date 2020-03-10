@@ -79,6 +79,7 @@ class TreeBuilder():
         self.printTree()
 
         self.checkForWinners()
+        self.makeGuess()
         
         print("wow done")
 
@@ -206,7 +207,7 @@ class TreeBuilder():
                 for _ in range(self.numberOfPlayers + 1):
                     playerCards.append([])
                 
-                solutions.append(leaf)
+                # solutions.append(leaf)
 
                 parent = leaf
                 leafpath = ""
@@ -214,10 +215,11 @@ class TreeBuilder():
                 while parent is not self.root:
                     leafpath = parent.name + ", Player " + str(parent.holder) + ", " + parent.cardType + " \n" + leafpath
                     if(parent.holder is not None):
-                        playerCards[parent.holder].append(parent.name)
+                        playerCards[parent.holder].append([parent.name, parent.cardType]) #{"name":parent.name, "type": parent.type}
                     parent = parent.parent
 
                 self.file.writelines(str(playerCards) + '\n')
+                solutions.append(playerCards)
                 # print(leafpath + "\n\n")
                 # print(leafpath)
         
@@ -226,7 +228,7 @@ class TreeBuilder():
         print(len(solutions))
         self.file.writelines("Number of solutions: " + str(len(solutions)))
         self.file.close()
-        return(len(solutions))
+        return(solutions)
 
     def addConstraint(self, player, cardName, possessed):
         if possessed:
@@ -234,5 +236,22 @@ class TreeBuilder():
         else: 
             self.players[player]['knownUnpossessedCards'].append(cardName)
 
+    def makeGuess(self):
+        guess = {'person': None, 'weapon': None, 'room': None}
+        centerRooms = {'person': {}, 'weapon': {}, 'room': {}}
+
+        solutions = self.checkForWinners()
+
+        # for solution in solutions:
+        #     center = solution[-1]
+        #     for item in center:
+        #         if (centerRooms[item[1]]:
+        #             pass
+        #             # centerRooms[item[1]][item[0]] = 1
+        #         # else:
+        #         #     centerRooms[item[1]][item[0]] +=1
+
+
+        return guess
 
 
