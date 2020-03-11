@@ -12,6 +12,10 @@ class Game():
         self.middle.append(random.choice(cards["weapons"]))
         self.middle.append(random.choice(cards["rooms"]))
 
+        self.nextPerson = ""
+        self.nextWeapon = ""
+        self.nextRoom = ""
+
         remainingCards = cards["people"] + cards["weapons"] + cards["rooms"]
         remainingCards = [card for card in remainingCards if card not in self.middle]
 
@@ -55,6 +59,11 @@ class Game():
         else:
             return False
 
+    def setNextGuess(self, person, weapon, room):
+        self.nextPerson = person
+        self.nextWeapon = weapon
+        self.nextRoom = room
+
     def getChoice(self, type):
         for item in range(0,len(cards[type])):
             print(str(item + 1) + ". " + cards[type][item], end =" ")
@@ -67,25 +76,28 @@ class Game():
         while(self.winner == None):
             print ("Player " + str(playerId + 1) + ", make a guess")
             
-            print ("\nPick a person: ", end=" ")
-            person = self.getChoice("people")
+            if (playerId != 0):
+                print ("\nPick a person: ", end=" ")
+                person = self.getChoice("people")
 
-            print ("\nPick a weapon: ", end=" ")
-            weapon = self.getChoice("weapons")
+                print ("\nPick a weapon: ", end=" ")
+                weapon = self.getChoice("weapons")
 
-            print ("\nPick a room:   ", end=" ")
-            room = self.getChoice("rooms")
+                print ("\nPick a room:   ", end=" ")
+                room = self.getChoice("rooms")
+
+                (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
+            
+            else:
+                (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
+                yield (opponent, item)
 
             print("guess: " + person + ", " + weapon + ", " + room)
-            (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
             
             try:
                 print(item + " shown by Player " + str(opponent+1))
             except:
                 print("No one showed")
-
-            if (playerId == 0):
-                    yield (opponent, item)
 
             playerIndex += 1
             playerId = playerIndex % self.numberOfPlayers

@@ -76,7 +76,7 @@ class TreeBuilder():
 
         self.addItemToTree(self.root, deck)        
         # self.pruneDeadEnds(self.root, checked)
-        self.printTree()
+        # self.printTree()
 
         self.checkForWinners()
         

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     # game.makeGuess(0,cards["people"][0], cards["weapons"][0], cards["rooms"][0])
     # game.play()
 
-    # Testing: This may or may not work
+    # Would require game.setNextGuess to be called first before starting
     for (opponent, item) in game.play():
         if (opponent != None and item != None):
             tree.addConstraint(opponent, item, True)
