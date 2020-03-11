@@ -22,13 +22,16 @@ if __name__ == '__main__':
 
             if (opponent > 1):
                 for player in range(1, opponent):
+                    # This may also want to note the other cards guessed
                     tree.addConstraint(player, item, False)
 
             tree.buildTree()
 
         else:
             for player in range(1, game.numberOfPlayers):
+                # This needs the input of the original guess since item = None
                 tree.addConstraint(player, item, False)
+
         print(opponent)
         print(item)
 
