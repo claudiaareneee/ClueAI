@@ -76,6 +76,7 @@ class Game():
         while(self.winner == None):
             print ("Player " + str(playerId + 1) + ", make a guess")
             
+            # Request choices from non-AI players
             if (playerId != 0):
                 print ("\nPick a person: ", end=" ")
                 person = self.getChoice("people")
@@ -88,9 +89,10 @@ class Game():
 
                 (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
             
+            # Send guess for AI player and yield result to main
             else:
                 (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
-                yield (opponent, item)
+                yield (opponent, item) # Function pauses here until main completes one iteration of the for loop
 
             print("guess: " + person + ", " + weapon + ", " + room)
             

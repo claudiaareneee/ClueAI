@@ -15,26 +15,33 @@ if __name__ == '__main__':
     # game.makeGuess(0,cards["people"][0], cards["weapons"][0], cards["rooms"][0])
     # game.play()
 
-    # Would require game.setNextGuess to be called first before starting
+    # Sets the first guess before the for loop can start
+    (person, weapon, room) = tree.nextGuess()
+    game.setNextGuess(person, weapon, room)
+
+    # For loop that runn everytime game.play() yields a (opponent, item) back to main
     for (opponent, item) in game.play():
         if (opponent != None and item != None):
             tree.addConstraint(opponent, item, True)
 
             if (opponent > 1):
+                # Adds known unpossessed cards for players 1 to the opponent that possessed
                 for player in range(1, opponent):
-                    # This may also want to note the other cards guessed
-                    tree.addConstraint(player, item, False)
-
-            tree.buildTree()
+                    tree.addConstraint(player, person, False)
+                    tree.addConstraint(player, weapon, False)
+                    tree.addConstraint(player, room, False)
 
         else:
+            # Add known unpossessed cards for all players
             for player in range(1, game.numberOfPlayers):
-                # This needs the input of the original guess since item = None
-                tree.addConstraint(player, item, False)
+                tree.addConstraint(player, person, False)
+                tree.addConstraint(player, weapon, False)
+                tree.addConstraint(player, room, False)
+
+        tree.buildTree()
 
         print(opponent)
         print(item)
 
-        # Functions that don't exist yet, but may be needed.
-        # (person, weapon, room) = tree.NextGuess()
-        # game.setNextGuess(person, weapon, room)
+        (person, weapon, room) = tree.nextGuess()
+        game.setNextGuess(person, weapon, room)

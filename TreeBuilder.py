@@ -234,5 +234,7 @@ class TreeBuilder():
         else: 
             self.players[player]['knownUnpossessedCards'].append(cardName)
 
-
+    def nextGuess(self):
+        # TODO
+        # needs to return in a (person, weapon, room) format
 
