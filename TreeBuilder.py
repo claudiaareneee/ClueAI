@@ -1,7 +1,11 @@
 from anytree import NodeMixin, RenderTree
 import copy
+import operator
 
 FILENAME = "tree.txt"
+PERSON = 'person'
+WEAPON = 'weapon'
+ROOM = 'room'
 
 class Item(NodeMixin):
     def __init__(self, name, holder, cardType, parent=None, children=None):
@@ -41,7 +45,7 @@ class TreeBuilder():
                 print("card " + card + " wasn't in deck")
 
         playerIndex = 0
-        self.numberOfCardsTypes = {"person": deck["people"], "weapon": deck["weapons"], "room": deck["rooms"]}
+        self.numberOfCardsTypes = {PERSON: deck["people"], WEAPON: deck["weapons"], ROOM: deck["rooms"]}
         numberOfCardsInDeck = len(deck["people"]) + len(deck["weapons"]) + len(deck["rooms"]) - 3
         
         while (numberOfCardsInDeck > 0):
@@ -64,11 +68,11 @@ class TreeBuilder():
         deck = []
 
         for item in self.remainingDeck['people']:
-            deck.append({'name': item, 'cardType': 'person'})
+            deck.append({'name': item, 'cardType': PERSON})
         for item in self.remainingDeck['weapons']:
-            deck.append({'name': item, 'cardType': 'weapon'})
+            deck.append({'name': item, 'cardType': WEAPON})
         for item in self.remainingDeck['rooms']:
-            deck.append({'name': item, 'cardType': 'room'})
+            deck.append({'name': item, 'cardType': ROOM})
 
         # print(deck)
 
@@ -79,6 +83,7 @@ class TreeBuilder():
         self.printTree()
 
         self.checkForWinners()
+        self.makeGuess()
         
         print("wow done")
 
@@ -98,8 +103,8 @@ class TreeBuilder():
         shouldHaveChildren = True
         parent = node
         cardCountPlayer = []
-        cardCountType = {"person": 0, "weapon": 0, "room": 0}
-        center = {'person': None, 'weapon': None, 'room': None}
+        cardCountType = {PERSON: 0, WEAPON: 0, ROOM: 0}
+        center = {PERSON: None, WEAPON: None, ROOM: None}
 
         for _ in range(self.numberOfPlayers + 1):
             cardCountPlayer.append(0)
@@ -206,7 +211,7 @@ class TreeBuilder():
                 for _ in range(self.numberOfPlayers + 1):
                     playerCards.append([])
                 
-                solutions.append(leaf)
+                # solutions.append(leaf)
 
                 parent = leaf
                 leafpath = ""
@@ -214,10 +219,11 @@ class TreeBuilder():
                 while parent is not self.root:
                     leafpath = parent.name + ", Player " + str(parent.holder) + ", " + parent.cardType + " \n" + leafpath
                     if(parent.holder is not None):
-                        playerCards[parent.holder].append(parent.name)
+                        playerCards[parent.holder].append([parent.name, parent.cardType]) #{"name":parent.name, "type": parent.type}
                     parent = parent.parent
 
                 self.file.writelines(str(playerCards) + '\n')
+                solutions.append(playerCards)
                 # print(leafpath + "\n\n")
                 # print(leafpath)
         
@@ -226,13 +232,40 @@ class TreeBuilder():
         print(len(solutions))
         self.file.writelines("Number of solutions: " + str(len(solutions)))
         self.file.close()
-        return(len(solutions))
+        return(solutions)
 
     def addConstraint(self, player, cardName, possessed):
         if possessed:
             self.players[player]['knownCards'].append(cardName)
         else: 
             self.players[player]['knownUnpossessedCards'].append(cardName)
+
+    def makeGuess(self):
+        centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}
+
+        solutions = self.checkForWinners()
+
+        for solution in solutions:
+            center = solution[-1]
+            for item in center:
+                try:
+                    centerRooms[item[1]][item[0]] += 1
+                except:
+                    centerRooms[item[1]][item[0]] =  1
+            # center = solution[-1]
+            # for item in center:
+            #     if (not centerRooms[item[1]] or not centerRooms[item[1]][item[0]]):
+            #         centerRooms[item[1]][item[0]] = 1
+            #     else:
+            #         centerRooms[item[1]][item[0]] +=1
+
+        person = max(centerRooms[PERSON].items(), key=operator.itemgetter(1))[0]
+        weapon = max(centerRooms[WEAPON].items(), key=operator.itemgetter(1))[0]
+        room = max(centerRooms[ROOM].items(), key=operator.itemgetter(1))[0]
+
+        guess = {PERSON: person, WEAPON: weapon, ROOM: room}
+
+        return guess
 
 
 
