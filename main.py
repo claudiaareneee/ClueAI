@@ -16,7 +16,7 @@ if __name__ == '__main__':
     # game.play()
 
     # Sets the first guess before the for loop can start
-    (person, weapon, room) = tree.nextGuess()
+    (person, weapon, room) = tree.makeGuess()
     game.setNextGuess(person, weapon, room)
 
     # For loop that runn everytime game.play() yields a (opponent, item) back to main
@@ -43,5 +43,5 @@ if __name__ == '__main__':
         print(opponent)
         print(item)
 
-        (person, weapon, room) = tree.nextGuess()
+        (person, weapon, room) = tree.makeGuess()
         game.setNextGuess(person, weapon, room)
