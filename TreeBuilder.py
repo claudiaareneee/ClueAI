@@ -165,14 +165,14 @@ class TreeBuilder():
 
     def printTree(self):
         # TODO: Remove
-        self.file = open(FILENAME,"a") 
+        self.file = open(FILENAME,"a", encoding='utf-8') 
         self.file.writelines("Print Tree Starts here\n")
 
         for pre, fill, node in RenderTree(self.root):
             treestr = u"%s%s" % (pre, node.name)
 
             # print(treestr.ljust(8), "   cardType: " + str(node.cardType), "   Player: " + str(node.holder), "   Constraint violated: " + str(node.constraintViolated))
-            self.file.writelines(str (treestr) + "   cardType: " + str(node.cardType) + "   Player: " + str(node.holder) + "   Constraint violated: " + str(node.constraintViolated) + "\n")
+            self.file.writelines(str(treestr) + "   cardType: " + str(node.cardType) + "   Player: " + str(node.holder) + "   Constraint violated: " + str(node.constraintViolated) + "\n")
         
         # print("\n\n\n")
         self.file.writelines("\n\nNumber of decendants " + str(len(self.root.descendants)))
@@ -180,6 +180,7 @@ class TreeBuilder():
 
         # TODO: remove
         self.file.close()
+        
 
     def checkForWinners(self):
         self.file = open(FILENAME,"a") 
