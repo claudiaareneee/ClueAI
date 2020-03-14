@@ -167,19 +167,6 @@ class TreeBuilder():
 
         node.shouldHaveChildren = shouldHaveChildren
 
-    # def pruneDeadEnds(self, node, checked):
-    #     properchildren = list()
-    #     for child in node.children:
-    #         if not child in checked:
-    #             if not node.constraintViolated:
-    #                 properchildren.append(child)
-    #             else:
-    #                 self.pruneDeadEnds(child, checked)
-    #         return
-        
-    #     node.children = tuple(properchildren)
-    #     checked.append(node)
-
 
     def printTree(self):
         # TODO: Remove
@@ -252,12 +239,6 @@ class TreeBuilder():
                     centerRooms[item[1]][item[0]] += 1
                 except:
                     centerRooms[item[1]][item[0]] =  1
-            # center = solution[-1]
-            # for item in center:
-            #     if (not centerRooms[item[1]] or not centerRooms[item[1]][item[0]]):
-            #         centerRooms[item[1]][item[0]] = 1
-            #     else:
-            #         centerRooms[item[1]][item[0]] +=1
 
         person = max(centerRooms[PERSON].items(), key=operator.itemgetter(1))[0]
         weapon = max(centerRooms[WEAPON].items(), key=operator.itemgetter(1))[0]
