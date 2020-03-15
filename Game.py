@@ -1,4 +1,5 @@
 import random
+import sys
 from Cards import cards
 
 
@@ -67,7 +68,17 @@ class Game():
     def getChoice(self, type):
         for item in range(0,len(cards[type])):
             print(str(item + 1) + ". " + cards[type][item], end =" ")
-        return cards[type][int(input()) - 1]
+        
+        choice  = input()
+        if (choice == "exit"):
+            print("exit")
+            sys.exit()
+            return
+        
+        try: 
+            return cards[type][int(choice) - 1]
+        except:
+            return self.getChoice(type)
 
     def play(self):
         playerIndex = 0
