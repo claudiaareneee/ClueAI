@@ -97,7 +97,7 @@ class Game():
                 yield (opponent, item) # Function pauses here until main completes one iteration of the for loop
             
             try:
-                print(item + " shown by Player " + str(opponent+1))
+                print(item + " shown by Player " + str(opponent))
             except:
                 print("No one showed")
 
