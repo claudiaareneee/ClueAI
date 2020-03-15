@@ -1,7 +1,7 @@
 import random
 from Game import Game
 from Cards import cards
-from TreeBuilder import TreeBuilder
+from TreeBuilder import TreeBuilder, FILENAME
 
 if __name__ == '__main__':
     game = Game(3)
@@ -11,6 +11,13 @@ if __name__ == '__main__':
     # print ("['Scarlet', 'Knife', 'Conservatory']")
     # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbell'], 0)
     tree = TreeBuilder(cards, game.numberOfPlayers, game.players[0], 0)
+
+    file = open(FILENAME,"a") 
+    file.writelines("Middle: " + str(game.middle) + "\n")
+    file.writelines("Players cards: " + str(game.players) + "\n\n\n")
+    file.close()
+
+    tree.buildTree()
 
     # game.makeGuess(0,cards["people"][0], cards["weapons"][0], cards["rooms"][0])
     # game.play()

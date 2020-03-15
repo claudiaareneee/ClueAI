@@ -60,7 +60,7 @@ class TreeBuilder():
         self.file.writelines("Trees\n\n\n")
         self.file.close()
 
-        self.buildTree()
+        # self.buildTree()
 
     def buildTree(self):
         self.root = Item('root', None, None, parent=None, children=None)
