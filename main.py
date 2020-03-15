@@ -43,7 +43,7 @@ if __name__ == '__main__':
         tree.buildTree()
 
         print("Opponent: " + str(opponent))
-        print("Item: " + item)
+        print("Item: " + str(item))
 
         (person, weapon, room) = tree.makeGuess()
         game.setNextGuess(person, weapon, room)
