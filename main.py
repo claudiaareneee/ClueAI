@@ -5,8 +5,8 @@ from TreeBuilder import TreeBuilder
 
 if __name__ == '__main__':
     game = Game(3)
-    print(game.middle)
-    print (game.players)
+    print ("Middle: " + str(game.middle))
+    print ("Players cards: " + str(game.players))
 
     # print ("['Scarlet', 'Knife', 'Conservatory']")
     # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbell'], 0)
@@ -18,6 +18,8 @@ if __name__ == '__main__':
     # Sets the first guess before the for loop can start
     (person, weapon, room) = tree.makeGuess()
     game.setNextGuess(person, weapon, room)
+
+    print ("AI guess" + str((person, weapon, room)))
 
     # For loop that runn everytime game.play() yields a (opponent, item) back to main
     for (opponent, item) in game.play():
@@ -40,8 +42,8 @@ if __name__ == '__main__':
 
         tree.buildTree()
 
-        print(opponent)
-        print(item)
+        print("Opponent: " + str(opponent))
+        print("Item: " + item)
 
         (person, weapon, room) = tree.makeGuess()
         game.setNextGuess(person, weapon, room)

@@ -88,12 +88,12 @@ class Game():
                 room = self.getChoice("rooms")
 
                 (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
-                print("guess: " + person + ", " + weapon + ", " + room)
+                print("Guess: " + person + ", " + weapon + ", " + room)
             
             # Send guess for AI player and yield result to main
             else:
                 (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
-                print("guess: " + self.nextPerson + ", " + self.nextWeapon + ", " + self.nextRoom)
+                print("Guess: " + self.nextPerson + ", " + self.nextWeapon + ", " + self.nextRoom)
                 yield (opponent, item) # Function pauses here until main completes one iteration of the for loop
             
             try:

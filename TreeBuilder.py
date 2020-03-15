@@ -77,10 +77,10 @@ class TreeBuilder():
         self.addItemToTree(self.root, deck)
         self.printTree()
 
-        self.checkForWinners()
-        self.makeGuess()
+        # self.checkForWinners()
+        # self.makeGuess()
         
-        print("wow done")
+        # print("wow done")
 
     def addItemToTree(self, node, deck):
         self.checkConstraints(node, deck)
@@ -168,7 +168,7 @@ class TreeBuilder():
         self.file = open(FILENAME,"a", encoding='utf-8') 
         self.file.writelines("Print Tree Starts here\n")
 
-        for pre, fill, node in RenderTree(self.root):
+        for pre, _, node in RenderTree(self.root):
             treestr = u"%s%s" % (pre, node.name)
 
             # print(treestr.ljust(8), "   cardType: " + str(node.cardType), "   Player: " + str(node.holder), "   Constraint violated: " + str(node.constraintViolated))
@@ -212,7 +212,7 @@ class TreeBuilder():
         
         self.file.writelines("\n\n\n")
 
-        print(len(solutions))
+        print("Number of solutions: " + str(len(solutions)))
         self.file.writelines("Number of solutions: " + str(len(solutions)) + "\n")
         self.file.close()
         return(solutions)
