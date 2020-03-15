@@ -66,6 +66,7 @@ class Game():
         self.nextRoom = room
 
     def getChoice(self, type):
+        return cards[type][0]
         for item in range(0,len(cards[type])):
             print(str(item + 1) + ". " + cards[type][item], end =" ")
         

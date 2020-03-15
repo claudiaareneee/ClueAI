@@ -30,6 +30,12 @@ if __name__ == '__main__':
 
     # For loop that runn everytime game.play() yields a (opponent, item) back to main
     for (opponent, item) in game.play():
+        file = open(FILENAME,"a") 
+        file.writelines("\n\nAI:\n")
+        file.writelines("\tGuess: " + str((person, weapon, room)) + "\n")
+        file.writelines("\tResponse: " + str((opponent, item)) + "\n\n")
+        file.close()
+
         if (opponent != None and item != None):
             tree.addConstraint(opponent, item, True)
 
@@ -54,3 +60,4 @@ if __name__ == '__main__':
 
         (person, weapon, room) = tree.makeGuess()
         game.setNextGuess(person, weapon, room)
+        input()

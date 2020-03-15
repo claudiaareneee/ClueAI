@@ -174,6 +174,11 @@ class TreeBuilder():
             # print(treestr.ljust(8), "   cardType: " + str(node.cardType), "   Player: " + str(node.holder), "   Constraint violated: " + str(node.constraintViolated))
             self.file.writelines(str(treestr) + "   cardType: " + str(node.cardType) + "   Player: " + str(node.holder) + "   Constraint violated: " + str(node.constraintViolated) + "\n")
         
+        self.file.writelines("\n\nConstraints: ")
+        for x in range (0, self.numberOfPlayers + 1):
+            self.file.writelines("\n\t" + str(self.players[x]))
+            
+
         # print("\n\n\n")
         self.file.writelines("\n\nNumber of decendants " + str(len(self.root.descendants)))
         self.file.writelines("\n\n\n")
@@ -219,9 +224,11 @@ class TreeBuilder():
 
     def addConstraint(self, player, cardName, possessed):
         if possessed:
-            self.players[player]['knownCards'].append(cardName)
+            if (not cardName in self.players[player]['knownCards']):
+                self.players[player]['knownCards'].append(cardName)
         else: 
-            self.players[player]['knownUnpossessedCards'].append(cardName)
+            if (not cardName in self.players[player]['knownUnpossessedCards']):
+                self.players[player]['knownUnpossessedCards'].append(cardName)
 
     def makeGuess(self):
         centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}
