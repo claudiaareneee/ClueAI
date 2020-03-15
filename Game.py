@@ -74,7 +74,7 @@ class Game():
         playerId = playerIndex % self.numberOfPlayers
 
         while(self.winner == None):
-            print ("Player " + str(playerId + 1) + ", make a guess")
+            print ("Player " + str(playerId) + ", make a guess")
             
             # Request choices from non-AI players
             if (playerId != 0):
