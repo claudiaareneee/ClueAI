@@ -142,7 +142,8 @@ class TreeBuilder():
 
             parent = parent.parent
 
-        # print(node.cardType)
+        # TODO: look into this, it's giving errors
+        print(node.cardType)
         if ((not node.constraintViolated) and (node.cardType in center) and (center[node.cardType] is not None)):
             constraintViolations = 0
             

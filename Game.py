@@ -66,7 +66,7 @@ class Game():
         self.nextRoom = room
 
     def getChoice(self, type):
-        return cards[type][0]
+        # return cards[type][0]
         for item in range(0,len(cards[type])):
             print(str(item + 1) + ". " + cards[type][item], end =" ")
         
@@ -101,12 +101,13 @@ class Game():
 
                 (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
                 print("Guess: " + person + ", " + weapon + ", " + room)
+                yield (playerId, opponent, (person, weapon, room))
             
             # Send guess for AI player and yield result to main
             else:
                 (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
                 print("Guess: " + self.nextPerson + ", " + self.nextWeapon + ", " + self.nextRoom)
-                yield (opponent, item) # Function pauses here until main completes one iteration of the for loop
+                yield (playerId, opponent, item) # Function pauses here until main completes one iteration of the for loop
             
             try:
                 print(item + " shown by Player " + str(opponent))
