@@ -143,15 +143,15 @@ class TreeBuilder():
             parent = parent.parent
 
         # TODO: look into this, it's giving errors
-        print(node.cardType)
+        # print(node.cardType)
         if ((not node.constraintViolated) and (node.cardType in center) and (center[node.cardType] is not None)):
             constraintViolations = 0
             
-            for player in range(self.numberOfPlayers):
+            for player in range(1, self.numberOfPlayers):
                 if (cardCountPlayer[player] > (self.players[player]['numberOfCards'] -1)):
                     constraintViolations += 1
 
-            if (node.depth < len(deck) and (constraintViolations == (self.numberOfPlayers - 1))):
+            if (node.depth < (len(deck)-1) and (constraintViolations == (self.numberOfPlayers - 1))):
                 node.constraintViolated = "Forward checking: Children will have too many cards, center already has " + node.cardType
 
         if (node.depth >= len(deck) or node.constraintViolated):

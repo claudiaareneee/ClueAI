@@ -10,6 +10,7 @@ if __name__ == '__main__':
 
     # print ("['Scarlet', 'Knife', 'Conservatory']")
     # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbell'], 0)
+    # tree = TreeBuilder(cards, 3, ['Ballroom', 'Plum', 'Lounge', 'Billiard Room'], 0) -- This one failed with 0
     tree = TreeBuilder(cards, game.numberOfPlayers, game.players[0], 0)
 
     file = open(FILENAME,"a") 
