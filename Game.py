@@ -2,6 +2,9 @@ import random
 import sys
 from Cards import cards
 
+PERSON = 'person'
+WEAPON = 'weapon'
+ROOM = 'room'
 
 class Game():
     def __init__(self, numberOfPlayers):
@@ -9,15 +12,15 @@ class Game():
         self.players = []
         self.middle = []
 
-        self.middle.append(random.choice(cards["people"]))
-        self.middle.append(random.choice(cards["weapons"]))
-        self.middle.append(random.choice(cards["rooms"]))
+        self.middle.append(random.choice(cards[PERSON]))
+        self.middle.append(random.choice(cards[WEAPON]))
+        self.middle.append(random.choice(cards[ROOM]))
 
         self.nextPerson = ""
         self.nextWeapon = ""
         self.nextRoom = ""
 
-        remainingCards = cards["people"] + cards["weapons"] + cards["rooms"]
+        remainingCards = cards[PERSON] + cards[WEAPON] + cards[ROOM]
         remainingCards = [card for card in remainingCards if card not in self.middle]
 
         for _ in range(0, self.numberOfPlayers):
@@ -66,7 +69,7 @@ class Game():
         self.nextRoom = room
 
     def getChoice(self, type):
-        return cards[type][0]
+        # return cards[type][0]
         for item in range(0,len(cards[type])):
             print(str(item + 1) + ". " + cards[type][item], end =" ")
         
@@ -91,13 +94,13 @@ class Game():
             # Request choices from non-AI players
             if (playerId != 0):
                 print ("\nPick a person: ", end=" ")
-                person = self.getChoice("people")
+                person = self.getChoice(PERSON)
 
                 print ("\nPick a weapon: ", end=" ")
-                weapon = self.getChoice("weapons")
+                weapon = self.getChoice(WEAPON)
 
                 print ("\nPick a room:   ", end=" ")
-                room = self.getChoice("rooms")
+                room = self.getChoice(ROOM)
 
                 (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
                 print("Guess: " + person + ", " + weapon + ", " + room)
