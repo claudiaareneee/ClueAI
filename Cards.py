@@ -1,12 +1,12 @@
 cards3 = {
     "people": ["White", "Green", "Scarlet"],
-    "weapons": ["Rope", "Knife", "Dumbell"],
+    "weapons": ["Rope", "Knife", "Dumbbell"],
     "rooms": ["Billiard Room", "Study", "Conservatory"]
 }
 
 cards = {
     "people": ["White", "Green", "Scarlet", "Plum"],
-    "weapons": ["Rope", "Knife", "Dumbell", "Wrench"],
+    "weapons": ["Rope", "Knife", "Dumbbell", "Wrench"],
     "rooms": ["Billiard Room", "Study", "Conservatory", "Ballroom", "Lounge"]
 }
 
@@ -18,12 +18,12 @@ cards2 = {
 
 cards4 = {
     "people": ["White", "Green", "Scarlet", "Plum", "Mustard", "Peacock"],
-    "weapons": ["Rope", "Knife", "Dumbell", "Wrench", "Revolver", "Poison"],
+    "weapons": ["Rope", "Knife", "Dumbbell", "Wrench", "Revolver", "Poison"],
     "rooms": ["Billiard Room", "Study", "Conservatory", "Ballroom", "Lounge", "Hall", "Dining room", "Library", "Kitchen"]
 }
 
 class Cards():
     def __init__(self):
         self.people = ["White", "Green", "Scarlet"]
-        self.weapons = ["Rope", "Knife", "Dumbell"]
+        self.weapons = ["Rope", "Knife", "Dumbbell"]
         self.rooms = ["Billiard Room", "Observatory", "Conservatory"]

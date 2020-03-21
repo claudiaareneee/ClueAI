@@ -91,7 +91,7 @@ class TreeBuilder():
                 #     return
 
                 if player != self.playerNumberInOrder:
-                    child = Item(deck[node.depth - 1]['name'], player, deck[node.depth - 1]['cardType'], parent=node, children=None)
+                    child = Item(deck[node.depth]['name'], player, deck[node.depth]['cardType'], parent=node, children=None)
                     self.addItemToTree(child, deck)
 
     def checkConstraints(self, node, deck):
@@ -143,7 +143,6 @@ class TreeBuilder():
             parent = parent.parent
 
         # TODO: look into this, it's giving errors
-        # print(node.cardType)
         if ((not node.constraintViolated) and (node.cardType in center) and (center[node.cardType] is not None)):
             constraintViolations = 0
             

@@ -9,8 +9,8 @@ if __name__ == '__main__':
     print ("Players cards: " + str(game.players))
 
     # print ("['Scarlet', 'Knife', 'Conservatory']")
-    # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbell'], 0)
-    # tree = TreeBuilder(cards, 3, ['Ballroom', 'Plum', 'Lounge', 'Billiard Room'], 0) -- This one failed with 0
+    # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbbell'], 0)
+    # tree = TreeBuilder(cards, 3, ['Ballroom', 'Plum', 'Lounge', 'Billiard Room'], 0) # -- This one failed with 0, test with stuff in temp
     tree = TreeBuilder(cards, game.numberOfPlayers, game.players[0], 0)
 
     file = open(FILENAME,"a") 
