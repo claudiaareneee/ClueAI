@@ -2,10 +2,15 @@ from anytree import NodeMixin, RenderTree
 import copy
 import operator
 
-FILENAME = "tree.txt"
+FILENAME = 'tree.txt'
 PERSON = 'person'
 WEAPON = 'weapon'
 ROOM = 'room'
+KNOWNCARDS = 'knownCards'
+KNOWNUNPOSSESSEDCARDS = 'knownUnpossessedCards'
+NUMBEROFCARDS = 'numberOfCards'
+NAME = 'name'
+CARDTYPE = 'cardType'
 
 class Item(NodeMixin):
     def __init__(self, name, holder, cardType, parent=None, children=None):
@@ -29,32 +34,32 @@ class TreeBuilder():
         self.players = []
 
         for _ in range(0, self.numberOfPlayers + 1): #  = 1 for center
-            self.players.append({'knownCards' : [], 'knownUnpossessedCards':[], 'numberOfCards' : 0})
+            self.players.append({KNOWNCARDS : [], KNOWNUNPOSSESSEDCARDS:[], NUMBEROFCARDS : 0})
 
         for card in playerCards:
-            if card in self.remainingDeck['people']:
-                self.remainingDeck['people'].remove(card)
+            if card in self.remainingDeck[PERSON]:
+                self.remainingDeck[PERSON].remove(card)
             
-            elif card in self.remainingDeck['weapons']:
-                self.remainingDeck['weapons'].remove(card)
+            elif card in self.remainingDeck[WEAPON]:
+                self.remainingDeck[WEAPON].remove(card)
 
-            elif card in self.remainingDeck['rooms']: 
-                self.remainingDeck['rooms'].remove(card)
+            elif card in self.remainingDeck[ROOM]: 
+                self.remainingDeck[ROOM].remove(card)
             
             else:
                 print("card " + card + " wasn't in deck")
 
         playerIndex = 0
-        self.numberOfCardsTypes = {PERSON: deck["people"], WEAPON: deck["weapons"], ROOM: deck["rooms"]}
-        numberOfCardsInDeck = len(deck["people"]) + len(deck["weapons"]) + len(deck["rooms"]) - 3
+        self.numberOfCardsTypes = {PERSON: deck[PERSON], WEAPON: deck[WEAPON], ROOM: deck[ROOM]}
+        numberOfCardsInDeck = len(deck[PERSON]) + len(deck[WEAPON]) + len(deck[ROOM]) - 3
         
         while (numberOfCardsInDeck > 0):
-            self.players[playerIndex % self.numberOfPlayers]['numberOfCards'] += 1
+            self.players[playerIndex % self.numberOfPlayers][NUMBEROFCARDS] += 1
             playerIndex += 1
             numberOfCardsInDeck -= 1
 
-        self.players[playerNumberInOrder]['knownCards'] = playerCards
-        self.players[numberOfPlayers]['numberOfCards'] = 3
+        self.players[playerNumberInOrder][KNOWNCARDS] = playerCards
+        self.players[numberOfPlayers][NUMBEROFCARDS] = 3
 
         self.file = open(FILENAME,"w") 
         self.file.writelines("Trees\n\n\n")
@@ -67,12 +72,12 @@ class TreeBuilder():
 
         deck = []
 
-        for item in self.remainingDeck['people']:
-            deck.append({'name': item, 'cardType': PERSON})
-        for item in self.remainingDeck['weapons']:
-            deck.append({'name': item, 'cardType': WEAPON})
-        for item in self.remainingDeck['rooms']:
-            deck.append({'name': item, 'cardType': ROOM})
+        for item in self.remainingDeck[PERSON]:
+            deck.append({NAME: item, CARDTYPE: PERSON})
+        for item in self.remainingDeck[WEAPON]:
+            deck.append({NAME: item, CARDTYPE: WEAPON})
+        for item in self.remainingDeck[ROOM]:
+            deck.append({NAME: item, CARDTYPE: ROOM})
 
         self.addItemToTree(self.root, deck)
         self.printTree()
@@ -91,7 +96,7 @@ class TreeBuilder():
                 #     return
 
                 if player != self.playerNumberInOrder:
-                    child = Item(deck[node.depth]['name'], player, deck[node.depth]['cardType'], parent=node, children=None)
+                    child = Item(deck[node.depth][NAME], player, deck[node.depth][CARDTYPE], parent=node, children=None)
                     self.addItemToTree(child, deck)
 
     def checkConstraints(self, node, deck):
@@ -119,8 +124,8 @@ class TreeBuilder():
                     node.constraintViolated = "Center doesn't have a " + parent.cardType
                     break
 
-            if cardCountPlayer[parent.holder] > self.players[parent.holder]['numberOfCards']:
-                # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCountPlayer[parent.holder]) + "  number " + str(self.players[parent.holder]['numberOfCards']))
+            if cardCountPlayer[parent.holder] > self.players[parent.holder][NUMBEROFCARDS]:
+                # print ( str(parent.holder) + "  " + parent.name + " count " + str(cardCountPlayer[parent.holder]) + "  number " + str(self.players[parent.holder][NUMBEROFCARDS]))
                 node.constraintViolated = "Player " + str(parent.holder) + " has too many cards"
                 break
 
@@ -129,12 +134,12 @@ class TreeBuilder():
                 break
 
             for i in range(self.numberOfPlayers):
-                if parent.name in self.players[i]["knownCards"]:
+                if parent.name in self.players[i][KNOWNCARDS]:
                     if parent.holder is not i:
                         parent.constraintViolated = "Player " + str(i) + " should have " + parent.name
                         break
                 
-                elif parent.name in self.players[i]["knownUnpossessedCards"]:
+                elif parent.name in self.players[i][KNOWNUNPOSSESSEDCARDS]:
                     if parent.holder is i:
                         parent.constraintViolated = "Player " + str(i) + " should not have " + parent.name
                         break
@@ -147,7 +152,7 @@ class TreeBuilder():
             constraintViolations = 0
             
             for player in range(1, self.numberOfPlayers):
-                if (cardCountPlayer[player] > (self.players[player]['numberOfCards'] -1)):
+                if (cardCountPlayer[player] > (self.players[player][NUMBEROFCARDS] -1)):
                     constraintViolations += 1
 
             if (node.depth < (len(deck)-1) and (constraintViolations == (self.numberOfPlayers - 1))):
@@ -224,11 +229,11 @@ class TreeBuilder():
 
     def addConstraint(self, player, cardName, possessed):
         if possessed:
-            if (not cardName in self.players[player]['knownCards']):
-                self.players[player]['knownCards'].append(cardName)
+            if (not cardName in self.players[player][KNOWNCARDS]):
+                self.players[player][KNOWNCARDS].append(cardName)
         else: 
-            if (not cardName in self.players[player]['knownUnpossessedCards']):
-                self.players[player]['knownUnpossessedCards'].append(cardName)
+            if (not cardName in self.players[player][KNOWNUNPOSSESSEDCARDS]):
+                self.players[player][KNOWNUNPOSSESSEDCARDS].append(cardName)
 
     def makeGuess(self):
         centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}

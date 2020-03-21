@@ -66,19 +66,20 @@ if __name__ == '__main__':
             input()
         
         else:
-            playerIndex = player + 1
-            playerId = playerIndex % game.numberOfPlayers
+            pass
+            # playerIndex = player + 1
+            # playerId = playerIndex % game.numberOfPlayers
 
-            (person, weapon, room) = item
+            # (person, weapon, room) = item
 
-            print ((player, opponent, item))
+            # print ((player, opponent, item))
 
-            print ("Players", end=" ")
-            while(playerId is not player and playerId is not opponent):
-                print (playerId, end=" ")
-                tree.addConstraint(playerId, person, False)
-                tree.addConstraint(playerId, weapon, False)
-                tree.addConstraint(playerId, room, False)
-                playerIndex += 1
-                playerId = playerIndex % game.numberOfPlayers
+            # print ("Players", end=" ")
+            # while(playerId is not player and playerId is not opponent):
+            #     print (playerId, end=" ")
+            #     tree.addConstraint(playerId, person, False)
+            #     tree.addConstraint(playerId, weapon, False)
+            #     tree.addConstraint(playerId, room, False)
+            #     playerIndex += 1
+            #     playerId = playerIndex % game.numberOfPlayers
             
