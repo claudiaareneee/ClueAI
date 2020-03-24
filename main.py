@@ -6,7 +6,7 @@ from TreeBuilder import TreeBuilder, FILENAME
 if __name__ == '__main__':
     game = Game(3)
     print ("Middle: " + str(game.middle))
-    print ("Players cards: " + str(game.players))
+    print ("Players cards: " + str(game.players) + "\n\n")
 
     # print ("['Scarlet', 'Knife', 'Conservatory']")
     # tree = TreeBuilder(cards, 3, ['White', 'Green', 'Lounge', 'Dumbbell'], 0)
@@ -24,8 +24,8 @@ if __name__ == '__main__':
     # game.play()
 
     # Sets the first guess before the for loop can start
-    (aiPerson, aiWeapon, aiRoom) = tree.makeGuess()
-    game.setNextGuess(aiPerson, aiWeapon, aiRoom)
+    (aiGuessForCenter, aiPerson, aiWeapon, aiRoom) = tree.makeGuess()
+    game.setNextGuess(aiGuessForCenter, aiPerson, aiWeapon, aiRoom)
 
     print ("AI guess" + str((aiPerson, aiWeapon, aiRoom)))
 
@@ -56,14 +56,8 @@ if __name__ == '__main__':
                     tree.addConstraint(player, aiWeapon, False)
                     tree.addConstraint(player, aiRoom, False)
 
-            tree.buildTree()
-
             print("Opponent: " + str(opponent))
             print("Item: " + str(item))
-
-            (aiPerson, aiWeapon, aiRoom) = tree.makeGuess()
-            game.setNextGuess(aiPerson, aiWeapon, aiRoom)
-            input()
         
         else:
             playerIndex = player + 1
@@ -81,4 +75,10 @@ if __name__ == '__main__':
                 tree.addConstraint(playerId, room, False)
                 playerIndex += 1
                 playerId = playerIndex % game.numberOfPlayers
+
+            if (player == (game.numberOfPlayers - 1)):
+                tree.buildTree()
+                (aiGuessForCenter, aiPerson, aiWeapon, aiRoom) = tree.makeGuess()
+                game.setNextGuess(aiGuessForCenter, aiPerson, aiWeapon, aiRoom)
+                input()
             

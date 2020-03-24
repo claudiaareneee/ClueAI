@@ -63,7 +63,8 @@ class Game():
         else:
             return False
 
-    def setNextGuess(self, person, weapon, room):
+    def setNextGuess(self, guessForMiddle, person, weapon, room):
+        self.nextGuessForMiddle = guessForMiddle
         self.nextPerson = person
         self.nextWeapon = weapon
         self.nextRoom = room
@@ -93,6 +94,9 @@ class Game():
             
             # Request choices from non-AI players
             if (playerId != 0):
+                print("Would you like to make a guess for the middle? (y/n) ", end=" ")
+                guessForMiddle = input()
+
                 print ("\nPick a person: ", end=" ")
                 person = self.getChoice(PERSON)
 
@@ -102,15 +106,30 @@ class Game():
                 print ("\nPick a room:   ", end=" ")
                 room = self.getChoice(ROOM)
 
-                (opponent, item) = self.makeGuess(playerId, person, weapon, room)
-                print("Guess: " + person + ", " + weapon + ", " + room)
-                yield (playerId, opponent, (person, weapon, room))
+                if (guessForMiddle is "y"):
+                    winner = self.makeGuessForMiddle(person, weapon, room)
+                    if (winner):
+                        self.winner = playerId
+                    else: 
+                        print("Guess was incorrect")
+                else:
+                    (opponent, item) = self.makeGuess(playerId, person, weapon, room)
+                    print("Guess: " + person + ", " + weapon + ", " + room)
+                    yield (playerId, opponent, (person, weapon, room))
             
             # Send guess for AI player and yield result to main
             else:
-                (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
-                print("Guess: " + self.nextPerson + ", " + self.nextWeapon + ", " + self.nextRoom)
-                yield (playerId, opponent, item) # Function pauses here until main completes one iteration of the for loop
+                if (self.nextGuessForMiddle):
+                    winner = self.makeGuessForMiddle(self.nextPerson, self.nextWeapon, self.nextRoom)
+                    if (winner):
+                        self.winner = playerId
+                    else: 
+                        print("Guess was incorrect")
+                
+                else:
+                    (opponent, item) = self.makeGuess(0, self.nextPerson, self.nextWeapon, self.nextRoom)
+                    print("\nGuess: " + self.nextPerson + ", " + self.nextWeapon + ", " + self.nextRoom)
+                    yield (playerId, opponent, item) # Function pauses here until main completes one iteration of the for loop
             
             try:
                 print(item + " shown by Player " + str(opponent))
@@ -121,3 +140,5 @@ class Game():
             playerId = playerIndex % self.numberOfPlayers
 
             print("\n\n\n\n")
+
+        print ("Congratulations! Player " + str(self.winner) + " guessed the correct solution of " + str(self.middle))
