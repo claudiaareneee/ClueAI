@@ -102,7 +102,7 @@ class Game():
                 print ("\nPick a room:   ", end=" ")
                 room = self.getChoice(ROOM)
 
-                (opponent, item) = self.makeGuess(playerIndex, person, weapon, room)
+                (opponent, item) = self.makeGuess(playerId, person, weapon, room)
                 print("Guess: " + person + ", " + weapon + ", " + room)
                 yield (playerId, opponent, (person, weapon, room))
             
