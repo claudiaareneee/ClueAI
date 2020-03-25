@@ -13,8 +13,8 @@ class Game():
         self.middle = []
 
         # self.dealCards()
-        self.middle = ['Plum', 'Revolver', 'Kitchen']
-        self.players = [['Rope', 'Hall', 'White', 'Mustard', 'Knife'], ['Lounge', 'Study', 'Green', 'Peacock', 'Poison'], ['Scarlet', 'Dining room', 'Library', 'Conservatory'], ['Wrench', 'Billiard Room', 'Dumbbell', 'Ballroom']]
+        self.middle = ['Plum', 'Wrench', 'Billiard Room']
+        self.players = [['Ballroom', 'White', 'Knife'], ['Scarlet', 'Study', 'Dumbbell'], ['Lounge', 'Rope'], ['Green', 'Conservatory']]
 
         self.winner = None
 
