@@ -12,6 +12,11 @@ class Game():
         self.players = []
         self.middle = []
 
+        self.dealCards()
+
+        self.winner = None
+
+    def dealCards(self):
         self.middle.append(random.choice(cards[PERSON]))
         self.middle.append(random.choice(cards[WEAPON]))
         self.middle.append(random.choice(cards[ROOM]))
@@ -32,8 +37,6 @@ class Game():
             self.players[playerIndex % self.numberOfPlayers].append(card)
             playerIndex += 1
             remainingCards.remove(card)
-
-        self.winner = None
 
     def makeGuess(self, playerId, person, weapon, room):
         playerIndex = playerId + 1
