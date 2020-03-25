@@ -1,6 +1,7 @@
 from anytree import NodeMixin, RenderTree
 import copy
 import operator
+import time
 
 FILENAME = 'tree.txt'
 PERSON = 'person'
@@ -68,6 +69,7 @@ class TreeBuilder():
         # self.buildTree()
 
     def buildTree(self):
+        initialTime = time.time()
         self.root = Item('root', None, None, parent=None, children=None)
 
         deck = []
@@ -80,7 +82,14 @@ class TreeBuilder():
             deck.append({NAME: item, CARDTYPE: ROOM})
 
         self.addItemToTree(self.root, deck)
+
         self.printTree()
+
+        elapsedTime = time.time() - initialTime
+
+        self.file = open(FILENAME,"a") 
+        self.file.writelines("\nElapsed Time: " + str(elapsedTime) + " s\n")
+        self.file.close()
 
         # self.checkForWinners()
         # self.makeGuess()
