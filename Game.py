@@ -12,7 +12,9 @@ class Game():
         self.players = []
         self.middle = []
 
-        self.dealCards()
+        # self.dealCards()
+        self.middle = ['Plum', 'Revolver', 'Kitchen']
+        self.players = [['Rope', 'Hall', 'White', 'Mustard', 'Knife'], ['Lounge', 'Study', 'Green', 'Peacock', 'Poison'], ['Scarlet', 'Dining room', 'Library', 'Conservatory'], ['Wrench', 'Billiard Room', 'Dumbbell', 'Ballroom']]
 
         self.winner = None
 
