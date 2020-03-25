@@ -1,6 +1,7 @@
 from anytree import NodeMixin, RenderTree
 import copy
 import operator
+import time
 
 FILENAME = 'tree.txt'
 PERSON = 'person'
@@ -70,6 +71,7 @@ class TreeBuilder():
         # self.buildTree()
 
     def buildTree(self):
+        initialTime = time.time()
         self.root = Item('root', None, None, parent=None, children=None)
 
         deck = []
@@ -82,7 +84,14 @@ class TreeBuilder():
             deck.append({NAME: item, CARDTYPE: ROOM})
 
         self.addItemToTree(self.root, deck)
+
         self.printTree()
+
+        elapsedTime = time.time() - initialTime
+
+        self.file = open(FILENAME,"a") 
+        self.file.writelines("\nElapsed Time: " + str(elapsedTime) + " s\n")
+        self.file.close()
 
         # self.checkForWinners()
         # self.makeGuess()
@@ -237,7 +246,7 @@ class TreeBuilder():
                 self.players[player][KNOWNUNPOSSESSEDCARDS].append(cardName)
 
     def makeGuess(self):
-        centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}
+        centerCards = {PERSON: {}, WEAPON: {}, ROOM: {}}
 
         solutions = self.checkForWinners()
 
@@ -248,15 +257,18 @@ class TreeBuilder():
             center = solution[-1]
             for item in center:
                 try:
-                    centerRooms[item[1]][item[0]] += 1
+                    centerCards[item[1]][item[0]] += 1
                 except:
-                    centerRooms[item[1]][item[0]] =  1
+                    centerCards[item[1]][item[0]] =  1
 
-        person = max(centerRooms[PERSON].items(), key=operator.itemgetter(1))[0]
-        weapon = max(centerRooms[WEAPON].items(), key=operator.itemgetter(1))[0]
-        room = max(centerRooms[ROOM].items(), key=operator.itemgetter(1))[0]
+        person = max(centerCards[PERSON].items(), key=operator.itemgetter(1))[0]
+        weapon = max(centerCards[WEAPON].items(), key=operator.itemgetter(1))[0]
+        room = max(centerCards[ROOM].items(), key=operator.itemgetter(1))[0]
 
-        guess = (person, weapon, room)
+        if (len(centerCards[PERSON]) == 1 and len(centerCards[WEAPON]) == 1 and len(centerCards[ROOM]) == 1):
+            guess = (True, person, weapon, room)
+        else:     
+            guess = (False, person, weapon, room)
 
         return guess
 
