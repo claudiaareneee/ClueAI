@@ -12,6 +12,7 @@ NUMBEROFCARDS = 'numberOfCards'
 NAME = 'name'
 CARDTYPE = 'cardType'
 
+
 class Item(NodeMixin):
     def __init__(self, name, holder, cardType, parent=None, children=None):
         super(Item, self).__init__()
@@ -50,6 +51,7 @@ class TreeBuilder():
                 print("card " + card + " wasn't in deck")
 
         playerIndex = 0
+
         self.numberOfCardsTypes = {PERSON: deck[PERSON], WEAPON: deck[WEAPON], ROOM: deck[ROOM]}
         numberOfCardsInDeck = len(deck[PERSON]) + len(deck[WEAPON]) + len(deck[ROOM]) - 3
         
@@ -84,7 +86,6 @@ class TreeBuilder():
 
         # self.checkForWinners()
         # self.makeGuess()
-        
         # print("wow done")
 
     def addItemToTree(self, node, deck):
@@ -256,6 +257,27 @@ class TreeBuilder():
         room = max(centerRooms[ROOM].items(), key=operator.itemgetter(1))[0]
 
         guess = (person, weapon, room)
+
+        return guess
+
+    def makeGuess(self):
+        centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}
+
+        solutions = self.checkForWinners()
+
+        for solution in solutions:
+            center = solution[-1]
+            for item in center:
+                try:
+                    centerRooms[item[1]][item[0]] += 1
+                except:
+                    centerRooms[item[1]][item[0]] =  1
+
+        person = max(centerRooms[PERSON].items(), key=operator.itemgetter(1))[0]
+        weapon = max(centerRooms[WEAPON].items(), key=operator.itemgetter(1))[0]
+        room = max(centerRooms[ROOM].items(), key=operator.itemgetter(1))[0]
+
+        guess = {PERSON: person, WEAPON: weapon, ROOM: room}
 
         return guess
 
