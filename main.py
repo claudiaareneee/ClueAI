@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
             print ((player, opponent, item))
 
-            print ("Players", end=" ")
+            print ("Players passed over: ", end=" ")
             while(playerId != player and playerId != opponent):
                 print (playerId, end=" ")
                 tree.addConstraint(playerId, person, False)
@@ -75,10 +75,12 @@ if __name__ == '__main__':
                 tree.addConstraint(playerId, room, False)
                 playerIndex += 1
                 playerId = playerIndex % game.numberOfPlayers
+            
+            print("\n")
 
             if (player == (game.numberOfPlayers - 1)):
                 tree.buildTree()
                 (aiGuessForCenter, aiPerson, aiWeapon, aiRoom) = tree.makeGuess()
                 game.setNextGuess(aiGuessForCenter, aiPerson, aiWeapon, aiRoom)
-                input()
+                # input()
             

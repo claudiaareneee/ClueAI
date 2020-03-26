@@ -271,27 +271,3 @@ class TreeBuilder():
             guess = (False, person, weapon, room)
 
         return guess
-
-    def makeGuess(self):
-        centerRooms = {PERSON: {}, WEAPON: {}, ROOM: {}}
-
-        solutions = self.checkForWinners()
-
-        for solution in solutions:
-            center = solution[-1]
-            for item in center:
-                try:
-                    centerRooms[item[1]][item[0]] += 1
-                except:
-                    centerRooms[item[1]][item[0]] =  1
-
-        person = max(centerRooms[PERSON].items(), key=operator.itemgetter(1))[0]
-        weapon = max(centerRooms[WEAPON].items(), key=operator.itemgetter(1))[0]
-        room = max(centerRooms[ROOM].items(), key=operator.itemgetter(1))[0]
-
-        guess = {PERSON: person, WEAPON: weapon, ROOM: room}
-
-        return guess
-
-
-
