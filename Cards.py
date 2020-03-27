@@ -8,7 +8,7 @@ cards3 = {
     ROOM: ["Billiard Room", "Study", "Conservatory"]
 }
 
-cards4 = {
+cards = {
     PERSON: ["White", "Green", "Scarlet", "Plum"],
     WEAPON: ["Rope", "Knife", "Dumbbell", "Wrench"],
     ROOM: ["Billiard Room", "Study", "Conservatory", "Ballroom", "Lounge"]
@@ -20,7 +20,7 @@ cards2 = {
     ROOM: ["Billiard Room", "Observatory"]
 }
 
-cards = {
+cards1 = {
     PERSON: ["White", "Green", "Scarlet", "Plum", "Mustard", "Peacock"],
     WEAPON: ["Rope", "Knife", "Dumbbell", "Wrench", "Revolver", "Poison"],
     ROOM: ["Billiard Room", "Study", "Conservatory", "Ballroom", "Lounge", "Hall", "Dining room", "Library", "Kitchen"]
